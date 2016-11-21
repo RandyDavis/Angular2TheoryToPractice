@@ -22,6 +22,7 @@ AppModule = __decorate([
         declarations: [
             app_component_1.JokeComponent,
             app_component_1.JokeListComponent,
+            app_component_1.JokeFormComponent,
             app_component_1.AppComponent
         ],
         bootstrap: [app_component_1.AppComponent]

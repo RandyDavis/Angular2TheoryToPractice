@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 class Joke {
     setup: string;
@@ -16,7 +16,28 @@ class Joke {
     }
 }
 
-let joke = new Joke("What did the cheese say when it looked in the mirror?", "Halloumi (Hello me!)");
+@Component({
+    selector: 'joke-form',
+    template: `
+        <div class="card card-block">
+            <h4 class="card-title">Create Joke</h4>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter the setup" #setup>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Enter the punchline" #punchline>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="createJoke(setup.value, punchline.value)">Create</button>
+        </div>
+    `
+})
+export class JokeFormComponent {
+    @Output() jokeCreated = new EventEmitter<Joke>();
+
+    createJoke(setup: string, punchline: string) {
+        this.jokeCreated.emit(new Joke(setup, punchline));
+    }
+}
 
 @Component({
     selector: 'joke',
@@ -36,6 +57,7 @@ export class JokeComponent {
 @Component({
     selector: 'joke-list',
     template: `
+    <joke-form (jokeCreated)="addJoke($event)"></joke-form>
     <joke *ngFor="let j of jokes" [joke]="j"></joke>
   `
 })
@@ -48,6 +70,10 @@ export class JokeListComponent {
             new Joke("What kind of cheese do you use to disguise a small horse?", "Mask-a-pony (Mascarpone)"),
             new Joke("A kid threw a lump of cheddar at me", "I thought, 'That\'s not very mature'")
         ];
+    }
+
+    addJoke(joke) {
+        this.jokes.unshift(joke);
     }
 }
 

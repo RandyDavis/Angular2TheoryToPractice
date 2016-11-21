@@ -20,7 +20,27 @@ var Joke = (function () {
     };
     return Joke;
 }());
-var joke = new Joke("What did the cheese say when it looked in the mirror?", "Halloumi (Hello me!)");
+var JokeFormComponent = (function () {
+    function JokeFormComponent() {
+        this.jokeCreated = new core_1.EventEmitter();
+    }
+    JokeFormComponent.prototype.createJoke = function (setup, punchline) {
+        this.jokeCreated.emit(new Joke(setup, punchline));
+    };
+    return JokeFormComponent;
+}());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", Object)
+], JokeFormComponent.prototype, "jokeCreated", void 0);
+JokeFormComponent = __decorate([
+    core_1.Component({
+        selector: 'joke-form',
+        template: "\n        <div class=\"card card-block\">\n            <h4 class=\"card-title\">Create Joke</h4>\n            <div class=\"form-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Enter the setup\" #setup>\n            </div>\n            <div class=\"form-group\">\n                <input type=\"text\" class=\"form-control\" placeholder=\"Enter the punchline\" #punchline>\n            </div>\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"createJoke(setup.value, punchline.value)\">Create</button>\n        </div>\n    "
+    }),
+    __metadata("design:paramtypes", [])
+], JokeFormComponent);
+exports.JokeFormComponent = JokeFormComponent;
 var JokeComponent = (function () {
     function JokeComponent() {
     }
@@ -46,12 +66,15 @@ var JokeListComponent = (function () {
             new Joke("A kid threw a lump of cheddar at me", "I thought, 'That\'s not very mature'")
         ];
     }
+    JokeListComponent.prototype.addJoke = function (joke) {
+        this.jokes.unshift(joke);
+    };
     return JokeListComponent;
 }());
 JokeListComponent = __decorate([
     core_1.Component({
         selector: 'joke-list',
-        template: "\n    <joke *ngFor=\"let j of jokes\" [joke]=\"j\"></joke>\n  "
+        template: "\n    <joke-form (jokeCreated)=\"addJoke($event)\"></joke-form>\n    <joke *ngFor=\"let j of jokes\" [joke]=\"j\"></joke>\n  "
     }),
     __metadata("design:paramtypes", [])
 ], JokeListComponent);
