@@ -10,6 +10,10 @@ gen
 
 # Node
 node_modules/
+/dist/
+/npm-debug.log
+specs.js
+update_all_branches
 
 # Yarn
 yarn.lock
