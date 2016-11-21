@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 class Joke {
     setup: string;
@@ -21,32 +21,24 @@ let joke = new Joke("What did the cheese say when it looked in the mirror?", "Ha
 @Component({
     selector: 'joke',
     template: `
-    <h1>{{ setup }}</h1>
-    <p>{{ punchline }}</p>
+    <div class="card card-block">
+      <h4 class="card-title">{{ data.setup }}</h4>
+      <p class="card-text" [hidden]="data.hide">{{ data.punchline }}</p>
+      <button class="btn btn-primary" (click)="data.toggle()">Tell Me!</button>
+    </div>
   `
 })
-
 export class JokeComponent {
-    setup: string;
-    punchline: string;
-
-    constructor() {
-        this.setup = "What did the cheese say when it looked in the mirror?";
-        this.punchline = "Halloumi (Hello me!)";
-    }
+    @Input('joke') data: Joke;
 }
+
 
 @Component({
     selector: 'joke-list',
     template: `
-    <div *ngFor="let joke of jokes" class="card card-block">
-      <h4 class="card-title">{{ joke.setup }}</h4>
-      <p class="card-text" [hidden]="joke.hide">{{ joke.punchline }}</p>
-      <button class="btn btn-primary" (click)="joke.toggle(joke)">Tell Me!</button>
-    </div>
+    <joke *ngFor="let j of jokes" [joke]="j"></joke>
   `
 })
-
 export class JokeListComponent {
     jokes: Joke[];
 
@@ -57,4 +49,14 @@ export class JokeListComponent {
             new Joke("A kid threw a lump of cheddar at me", "I thought, 'That\'s not very mature'")
         ];
     }
+}
+
+@Component({
+    selector: 'app',
+    template: `
+        <joke-list></joke-list>
+    `
+})
+export class AppComponent{
+
 }

@@ -23,15 +23,17 @@ var Joke = (function () {
 var joke = new Joke("What did the cheese say when it looked in the mirror?", "Halloumi (Hello me!)");
 var JokeComponent = (function () {
     function JokeComponent() {
-        this.setup = "What did the cheese say when it looked in the mirror?";
-        this.punchline = "Halloumi (Hello me!)";
     }
     return JokeComponent;
 }());
+__decorate([
+    core_1.Input('joke'),
+    __metadata("design:type", Joke)
+], JokeComponent.prototype, "data", void 0);
 JokeComponent = __decorate([
     core_1.Component({
         selector: 'joke',
-        template: "\n    <h1>{{ setup }}</h1>\n    <p>{{ punchline }}</p>\n  "
+        template: "\n    <div class=\"card card-block\">\n      <h4 class=\"card-title\">{{ data.setup }}</h4>\n      <p class=\"card-text\" [hidden]=\"data.hide\">{{ data.punchline }}</p>\n      <button class=\"btn btn-primary\" (click)=\"data.toggle()\">Tell Me!</button>\n    </div>\n  "
     }),
     __metadata("design:paramtypes", [])
 ], JokeComponent);
@@ -49,9 +51,22 @@ var JokeListComponent = (function () {
 JokeListComponent = __decorate([
     core_1.Component({
         selector: 'joke-list',
-        template: "\n    <div *ngFor=\"let joke of jokes\" class=\"card card-block\">\n      <h4 class=\"card-title\">{{ joke.setup }}</h4>\n      <p class=\"card-text\" [hidden]=\"joke.hide\">{{ joke.punchline }}</p>\n      <button class=\"btn btn-primary\" (click)=\"joke.toggle(joke)\">Tell Me!</button>\n    </div>\n  "
+        template: "\n    <joke *ngFor=\"let j of jokes\" [joke]=\"j\"></joke>\n  "
     }),
     __metadata("design:paramtypes", [])
 ], JokeListComponent);
 exports.JokeListComponent = JokeListComponent;
+var AppComponent = (function () {
+    function AppComponent() {
+    }
+    return AppComponent;
+}());
+AppComponent = __decorate([
+    core_1.Component({
+        selector: 'app',
+        template: "\n        <joke-list></joke-list>\n    "
+    }),
+    __metadata("design:paramtypes", [])
+], AppComponent);
+exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map
