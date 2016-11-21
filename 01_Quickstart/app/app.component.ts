@@ -1,7 +1,22 @@
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {NgModule}      from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
 import {Component} from '@angular/core';
+
+class Joke {
+    setup: string;
+    punchline: string;
+    hide: boolean;
+
+    constructor(setup: string, punchline: string) {
+        this.setup = setup;
+        this.punchline = punchline;
+        this.hide = true;
+    }
+
+    toggle() {
+        this.hide = !this.hide;
+    }
+}
+
+let joke = new Joke("What did the cheese say when it looked in the mirror?", "Halloumi (Hello me!)");
 
 @Component({
     selector: 'joke',
@@ -27,49 +42,19 @@ export class JokeComponent {
     <div *ngFor="let joke of jokes" class="card card-block">
       <h4 class="card-title">{{ joke.setup }}</h4>
       <p class="card-text" [hidden]="joke.hide">{{ joke.punchline }}</p>
-      <button class="btn btn-primary" (click)="toggle(joke)">Tell Me!</button>
+      <button class="btn btn-primary" (click)="joke.toggle(joke)">Tell Me!</button>
     </div>
   `
 })
 
 export class JokeListComponent {
-    jokes: Object[];
+    jokes: Joke[];
 
     constructor() {
         this.jokes = [
-            {
-                setup: "What did the cheese say when it looked in the mirror?",
-                punchline: "Halloumi (Hello me!)",
-                hide: true
-            },
-            {
-                setup: "What kind of cheese do you use to disguise a small horse?",
-                punchline: "Mask-a-pony (Mascarpone)",
-                hide: true
-            },
-            {
-                setup: "A kid threw a lump of cheddar at me",
-                punchline: "I thought, 'That\'s not very mature'",
-                hide: true
-            }
+            new Joke("What did the cheese say when it looked in the mirror?", "Halloumi (Hello me!)"),
+            new Joke("What kind of cheese do you use to disguise a small horse?", "Mask-a-pony (Mascarpone)"),
+            new Joke("A kid threw a lump of cheddar at me", "I thought, 'That\'s not very mature'")
         ];
     }
-
-    toggle(joke) {
-        joke.hide = !joke.hide;
-    }
 }
-
-
-
-
-
-// @NgModule({
-//     imports: [BrowserModule],
-//     declarations: [JokeComponent, JokeListComponent],
-//     bootstrap: [JokeListComponent]
-// })
-// export class AppModule {
-// }
-
-// platformBrowserDynamic().bootstrapModule(AppModule);
