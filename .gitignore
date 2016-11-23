@@ -15,5 +15,8 @@ node_modules/
 specs.js
 update_all_branches
 
+#Typings
+typings/
+
 # Yarn
 yarn.lock
